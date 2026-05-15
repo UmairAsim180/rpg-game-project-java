@@ -1,0 +1,60 @@
+.start-screen-root {
+    -fx-background-image: url("rpg-background.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+.text-field {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 15px;
+    -fx-border-color: #7a7a7a;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.text-field:focused {
+    -fx-border-color: #4da6ff;
+}
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #4a4a4a, #2b2b2b);
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 30px;
+    -fx-border-color: #1a1a1a;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #5a5a5a, #3b3b3b);
+    -fx-text-fill: #e0e0e0;
+}
+
+.button:pressed {
+    -fx-background-color: #1a1a1a;
+    -fx-translate-y: 2px;
+}
+.game-title {
+    /*-fx-text-fill: white;*/
+    /*-fx-font-size: 48px;*/
+    /*-fx-font-weight: bold;*/
+    /*-fx-effect: dropshadow(gaussian, black, 10, 0.5, 0, 5); !* Adds a cool text shadow! *!*/
+    /*-fx-padding: 0 0 30px 0; !* Adds 30px of space below the title *!*/
+}
+.button, .text-field {
+    -fx-font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+}
+.credits-text {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-text-fill: rgba(255, 255, 255, 0.7); /* 50% transparent white */
+    -fx-font-size: 18px;
+    -fx-font-style: italic;
+}
