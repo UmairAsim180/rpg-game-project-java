@@ -6,7 +6,7 @@ public class BossEnemy extends Enemy{
     private int turnCounter;
 
     public BossEnemy(String name, String specialAbility) {
-        super(name, "Boss", 200, 22, 100);
+        super(name, "Boss", 200, 13, 100);
         this.phase = 1;
         this.specialAbility = specialAbility;
         this.turnCounter = 0;

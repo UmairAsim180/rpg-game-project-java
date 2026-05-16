@@ -19,7 +19,13 @@ public class Player extends Entity {
         int randomBonus=(int)(Math.random()*10);
         return damage+randomBonus+(level*2);
     }
-
+    public int magicAttack() {
+        isDefending = false;
+        int baseMagic = damage + 15;
+        int levelBonus = level * 5;
+        int randomBonus = (int)(Math.random() * 12);
+        return baseMagic + levelBonus + randomBonus;
+    }
     public void defend(){
         isDefending=true;
         this.heal(5);

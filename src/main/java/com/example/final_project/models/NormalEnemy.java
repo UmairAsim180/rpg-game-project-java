@@ -7,7 +7,7 @@ public class NormalEnemy extends Enemy{
     public NormalEnemy(String name,int spawnLevel){
         super(name,"Normal",50+(spawnLevel*20),10+(spawnLevel*4),30+(spawnLevel*15));
         this.spawnLevel = spawnLevel;
-        this.attackPower = 10 + (spawnLevel * 4);
+        this.attackPower = 6 + (spawnLevel * 2);
     }
 
     public int basicAttack(){
