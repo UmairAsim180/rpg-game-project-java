@@ -19,7 +19,7 @@
          </image>
       </ImageView>
       <ProgressBar fx:id="playerHealthBar" layoutX="167.0" layoutY="65.0" prefHeight="25.0" prefWidth="250.0" progress="0.61" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="75.0" />
-      <Label layoutX="250.0" layoutY="35.0" text="Umair" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="35.0">
+      <Label fx:id="playerNameLabel" layoutX="250.0" layoutY="35.0" text="Umair" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="35.0">
          <font>
             <Font name="Calibri" size="24.0" />
          </font>
@@ -30,17 +30,17 @@
          </image>
       </ImageView>
       <ProgressBar fx:id="enemyHealthBar" layoutX="862.0" layoutY="77.0" prefHeight="25.0" prefWidth="250.0" progress="0.33" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="75.0" />
-      <Label layoutX="1030.0" layoutY="35.0" text="Enemy" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="35.0">
+      <Label fx:id="enemyNameLabel" layoutX="1030.0" layoutY="35.0" text="Enemy" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="35.0">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <ImageView fitHeight="450.0" fitWidth="300.0" layoutX="200.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0">
+      <ImageView fx:id="playerImageView" fitHeight="450.0" fitWidth="300.0" layoutX="200.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0">
          <image>
             <Image url="@player-rest.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="600.0" fitWidth="300.0" layoutX="637.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="200.0">
+      <ImageView fx:id="enemyImageView" fitHeight="600.0" fitWidth="300.0" layoutX="637.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="200.0">
          <image>
             <Image url="@enemy-rest.png" />
          </image>
@@ -71,6 +71,21 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextArea fx:id="combatLog" layoutX="560.0" layoutY="371.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="371.0" />
+      <TextArea fx:id="combatLog" layoutX="560.0" layoutY="371.0" prefHeight="200.0" prefWidth="400.0" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="371.0" />
+      <Label fx:id="lvlDisplay" layoutX="577.0" layoutY="209.0" text="Level 1" textAlignment="CENTER" textFill="#fbff00" AnchorPane.leftAnchor="577.0" AnchorPane.topAnchor="209.0">
+         <font>
+            <Font name="Calibri" size="48.0" />
+         </font>
+      </Label>
+      <Label fx:id="playerLog" layoutX="186.0" layoutY="240.0" textFill="RED" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="250.0">
+         <font>
+            <Font name="Calibri Bold" size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="enemyLog" layoutX="587.0" layoutY="291.0" textFill="RED" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="250.0">
+         <font>
+            <Font name="Calibri Bold" size="36.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

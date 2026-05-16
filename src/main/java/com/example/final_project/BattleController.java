@@ -1,5 +1,6 @@
 package com.example.final_project;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,61 +8,83 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 import com.example.final_project.models.BossEnemy;
 import com.example.final_project.models.Enemy;
+import com.example.final_project.models.NormalEnemy;
 import com.example.final_project.models.Player;
-import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
 public class BattleController {
 
     // --- 1. UI Elements ---
-    @FXML
-    private ProgressBar playerHealthBar;
-    @FXML
-    private ProgressBar enemyHealthBar;
-    @FXML
-    private Label playerHealthText;
-    @FXML
-    private Label enemyHealthText;
-    @FXML
-    private TextArea combatLog;
+    @FXML private ProgressBar playerHealthBar;
+    @FXML private ProgressBar enemyHealthBar;
+    @FXML private Label playerHealthText;
+    @FXML private Label enemyHealthText;
+    @FXML private Label lvlDisplay;
+    @FXML private Label playerLog;
+    @FXML private Label enemyLog;
+    @FXML private Label enemyNameLabel;
+    @FXML private Label playerNameLabel;
 
-    // --- 2. The Actual Game Models ---
+    // --- 2. Game Models & State Trackers ---
     private Player player;
-    private Enemy currentEnemy; // We use 'Enemy' so it can be Normal or Boss!
+    private Enemy currentEnemy;
+    private String playerName;
+
+    private int currentLevel = 1;
+    private int enemiesDefeatedThisLevel = 0;
+
+    // NEW: Cooldown timer to prevent magic spamming!
+    private int magicCooldown = 0;
 
     // --- 3. Initialization ---
+    public void setPlayerName(String name) {
+        this.playerName = name;
+        playerNameLabel.setText(name);
+        player = new Player(playerName);
+        spawnNextEnemy();
+    }
+
     @FXML
     public void initialize() {
-        // Instantiate Umair's classes!
-        player = new Player("Umair");
-        currentEnemy = new BossEnemy("Dark Knight", "Hellfire Strike");
+        currentLevel = 1;
+        enemiesDefeatedThisLevel = 0;
+        magicCooldown = 0;
+    }
 
-        combatLog.setText("A wild " + currentEnemy.getName() + " appears!\nBattle Start!\n\n");
+    private void spawnNextEnemy() {
+        if (currentLevel == 1) {
+            currentEnemy = new NormalEnemy("Goblin Scout", 1);
+        } else if (currentLevel == 2) {
+            currentEnemy = new NormalEnemy("Orc Warrior", 2);
+        } else if (currentLevel == 3) {
+            currentEnemy = new BossEnemy("Dark Knight", "Hellfire Strike");
+        }
+
+        showLevelDisplayTemporary("Level " + currentLevel);
+        enemyNameLabel.setText(currentEnemy.getName());
         updateUI();
     }
 
     // --- 4. Player Actions ---
     @FXML
     public void onAttackClick(ActionEvent event) {
-        if (player.isDead() || currentEnemy.isDead()) return; // Stop if game is over
+        if (player.isDead() || currentEnemy.isDead()) return;
 
-        // 1. Player attacks
         int damage = player.attack();
         currentEnemy.takeDamage(damage);
-        combatLog.appendText(player.getName() + " strikes for " + damage + " damage!\n");
+        showEnemyLogTemporary("-" + damage, "red");
 
-        // 2. Check Boss Phase Change
         if (currentEnemy instanceof BossEnemy) {
             BossEnemy boss = (BossEnemy) currentEnemy;
             if (boss.checkPhaseChange()) {
-                combatLog.appendText("WARNING: " + boss.getName() + " entered Phase 2! Damage Increased!\n");
+                showLevelDisplayTemporary("Enemy Damage Increased!");
             }
         }
-
         checkGameState();
     }
 
@@ -69,66 +92,100 @@ public class BattleController {
     public void onDefendClick(ActionEvent event) {
         if (player.isDead() || currentEnemy.isDead()) return;
 
-        player.defend(); // This sets defending to true AND heals for 5!
-        combatLog.appendText(player.getName() + " raises their shield and recovers 5 HP.\n");
+        player.defend();
+        showPlayerLogTemporary("+5", "green");
+        updateUI();
 
-        enemyTurn(); // Enemy still gets to attack while you defend
+        // Wait 1.2 seconds for the player to see the heal before the enemy attacks
+        PauseTransition wait = new PauseTransition(Duration.seconds(1.2));
+        wait.setOnFinished(e -> enemyTurn());
+        wait.play();
     }
 
     @FXML
     public void onMagicClick(ActionEvent event) {
         if (player.isDead() || currentEnemy.isDead()) return;
 
-        // NOTE: Umair hasn't added a magicAttack() to the Player class yet!
-        // We will fake it for now by adding a flat +15 to a normal attack.
-        int magicDamage = player.attack() + 15;
-        currentEnemy.takeDamage(magicDamage);
+        // Check if magic is on cooldown!
+        if (magicCooldown > 0) {
+            showPlayerLogTemporary("Cooldown: " + magicCooldown, "gray");
+            return; // Stop the attack
+        }
 
-        combatLog.appendText(player.getName() + " casts a spell for " + magicDamage + " damage!\n");
+        int magicDamage = player.magicAttack();
+        currentEnemy.takeDamage(magicDamage);
+        showEnemyLogTemporary("-" + magicDamage, "purple");
+
+        magicCooldown = 3; // Reset the cooldown to 3 turns
         checkGameState();
     }
 
     // --- 5. Game Loop Logic ---
-
     private void checkGameState() {
         updateUI();
 
         if (currentEnemy.isDead()) {
-            combatLog.appendText("\nVICTORY! The " + currentEnemy.getName() + " is defeated!\n");
             player.gainExperience(currentEnemy.getReward());
-            // TODO: Trigger Game Over Screen teleport here added succesfully
-            switchToGameOverScreen(true, "You have successfully slain the " + currentEnemy.getName() + "!");
+            enemiesDefeatedThisLevel++;
+
+            if (currentLevel == 3) {
+                switchToGameOverScreen(true, "You have slain the Boss and conquered the game!");
+            }
+            else if (enemiesDefeatedThisLevel == 2) {
+                currentLevel++;
+                enemiesDefeatedThisLevel = 0;
+
+                showLevelDisplayTemporary("Level " + (currentLevel-1) + " Cleared!");
+
+                player.heal(40);
+                showPlayerLogTemporary("+40", "green");
+
+                // Wait 2 seconds so the player can read "Level Cleared" before spawning the next enemy
+                PauseTransition wait = new PauseTransition(Duration.seconds(2));
+                wait.setOnFinished(e -> spawnNextEnemy());
+                wait.play();
+            }
+            else {
+                // Wait 1.5 seconds before spawning the next enemy of the current level
+                PauseTransition wait = new PauseTransition(Duration.seconds(1.5));
+                wait.setOnFinished(e -> spawnNextEnemy());
+                wait.play();
+            }
         } else {
-            // If the enemy survived, it's their turn!
-            enemyTurn();
+            // Wait 1.2 seconds before the enemy hits back
+            PauseTransition wait = new PauseTransition(Duration.seconds(1.2));
+            wait.setOnFinished(e -> enemyTurn());
+            wait.play();
         }
     }
 
     private void enemyTurn() {
         if (currentEnemy.isDead()) return;
 
-        // Enemy calculates their attack
-        int enemyRawDamage = currentEnemy.chooseAction();
+        // Decrease the magic cooldown every time the enemy takes a turn
+        if (magicCooldown > 0) {
+            magicCooldown--;
+        }
 
-        // Subtract player's defense (if they clicked defend)
+        int enemyRawDamage = currentEnemy.chooseAction();
         int actualDamage = Math.max(0, enemyRawDamage - player.getDefenseReduction());
 
         player.takeDamage(actualDamage);
-        player.resetDefense(); // Defense only lasts for one hit!
+        player.resetDefense();
+        showPlayerLogTemporary("-" + actualDamage, "red");
 
-        combatLog.appendText(currentEnemy.getName() + " hits for " + actualDamage + " damage!\n\n");
         updateUI();
 
         if (player.isDead()) {
-            combatLog.appendText("\nDEFEAT! " + player.getName() + " has fallen...\n");
-            // TODO: Trigger Game Over Screen teleport here added successfully
-            switchToGameOverScreen(false, "You fell in battle against the " + currentEnemy.getName() + ".");
+            // Wait 1.5 seconds so the player sees the final damage text before teleporting
+            PauseTransition deathWait = new PauseTransition(Duration.seconds(1.5));
+            deathWait.setOnFinished(e -> switchToGameOverScreen(false, "You fell in battle against the " + currentEnemy.getName() + "."));
+            deathWait.play();
         }
     }
 
-    // --- 6. UI Updater ---
+    // --- 6. Teleportation & UI ---
     private void updateUI() {
-        // Cast to double so it does decimal division (e.g., 0.5 for 50%)
         playerHealthBar.setProgress((double) player.getCurrentHealth() / player.getMaxHealth());
         enemyHealthBar.setProgress((double) currentEnemy.getCurrentHealth() / currentEnemy.getMaxHealth());
 
@@ -136,20 +193,19 @@ public class BattleController {
         enemyHealthText.setText(currentEnemy.getCurrentHealth() + " / " + currentEnemy.getMaxHealth() + " HP");
     }
 
-    private void switchToGameOverScreen(boolean playerWon, String massage) {
+    private void switchToGameOverScreen(boolean playerWon, String message) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/final_project/game-over.fxml"));
             Parent root = loader.load();
 
-            // Grab the controller of the game-over screen and pass the results to it!
             GameOverController gameOverController = loader.getController();
-            gameOverController.setGameResult(playerWon, massage);
+            gameOverController.setGameResult(playerWon, message);
 
             Scene scene = new Scene(root, 1280, 720);
             scene.getStylesheets().add(getClass().getResource("/com/example/final_project/style.css").toExternalForm());
 
-            // Grab the current window stage from any visible UI element (like the combat log)
-            Stage stage = (Stage) combatLog.getScene().getWindow();
+            // Swapped combatLog for playerHealthBar to get the window stage safely
+            Stage stage = (Stage) playerHealthBar.getScene().getWindow();
             stage.setScene(scene);
 
         } catch (IOException e) {
@@ -157,5 +213,30 @@ public class BattleController {
             e.printStackTrace();
         }
     }
-}
 
+    // --- 7. Temporary Text Helpers ---
+    private void showLevelDisplayTemporary(String text) {
+        lvlDisplay.setText(text);
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(event -> lvlDisplay.setText(""));
+        pause.play();
+    }
+
+    private void showPlayerLogTemporary(String text, String color) {
+        playerLog.setText(text);
+        playerLog.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
+        pause.setOnFinished(event -> playerLog.setText(""));
+        pause.play();
+    }
+
+    private void showEnemyLogTemporary(String text, String color) {
+        enemyLog.setText(text);
+        enemyLog.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
+        pause.setOnFinished(event -> enemyLog.setText(""));
+        pause.play();
+    }
+}

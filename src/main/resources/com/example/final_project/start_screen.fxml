@@ -30,8 +30,16 @@
                   <Font name="Calibri Bold" size="14.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="20.0" />
+                  <Insets />
                </VBox.margin></TextField>
+            <Label fx:id="startErrorLabel" prefHeight="5.0" prefWidth="300.0" textFill="RED">
+               <font>
+                  <Font name="Calibri Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="4.0" />
+               </padding>
+            </Label>
             <Button mnemonicParsing="false" onAction="#onClickStart" prefHeight="25.0" prefWidth="250.0" text="Start Game" />
             <Button mnemonicParsing="false" onAction="#onExitClick" prefHeight="25.0" prefWidth="250.0" text="Exit" />
          </children>
