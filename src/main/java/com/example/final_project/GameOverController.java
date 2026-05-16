@@ -30,8 +30,8 @@ public class GameOverController {
 
     @FXML
     public void onPlayAgainClick(ActionEvent event) throws IOException {
-        // Reload the main game screen absolute path
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/final_project/main-game.fxml"));
+        // Send them back to the Start Screen so the name system doesn't break!
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/final_project/start_screen.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 1280, 720);
