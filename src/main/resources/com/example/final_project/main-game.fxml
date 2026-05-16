@@ -4,20 +4,21 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="battle-arena-root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="battle-arena-root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.final_project.BattleController">
    <children>
       <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="35.0" layoutY="35.0" pickOnBounds="true" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="35.0">
          <image>
             <Image url="@player-avatar.png" />
          </image>
       </ImageView>
-      <ProgressBar layoutX="167.0" layoutY="65.0" prefHeight="25.0" prefWidth="250.0" progress="0.61" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="75.0" />
+      <ProgressBar fx:id="playerHealthBar" layoutX="167.0" layoutY="65.0" prefHeight="25.0" prefWidth="250.0" progress="0.61" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="75.0" />
       <Label layoutX="250.0" layoutY="35.0" text="Umair" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="35.0">
          <font>
             <Font name="Calibri" size="24.0" />
@@ -28,7 +29,7 @@
             <Image url="@enemy-avatar.png" />
          </image>
       </ImageView>
-      <ProgressBar layoutX="862.0" layoutY="77.0" prefHeight="25.0" prefWidth="250.0" progress="0.33" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="75.0" />
+      <ProgressBar fx:id="enemyHealthBar" layoutX="862.0" layoutY="77.0" prefHeight="25.0" prefWidth="250.0" progress="0.33" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="75.0" />
       <Label layoutX="1030.0" layoutY="35.0" text="Enemy" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="35.0">
          <font>
             <Font size="24.0" />
@@ -46,19 +47,30 @@
       </ImageView>
       <VBox layoutX="35.0" layoutY="455.0" prefHeight="200.0" prefWidth="250.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="35.0">
          <children>
-            <Button mnemonicParsing="false" styleClass="action-button" text="Attack">
+            <Button mnemonicParsing="false" onAction="#onAttackClick" styleClass="action-button" text="Attack">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin></Button>
-            <Button mnemonicParsing="false" styleClass="action-button" text="Defend">
+            <Button mnemonicParsing="false" onAction="#onDefendClick" styleClass="action-button" text="Defend">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin></Button>
-            <Button mnemonicParsing="false" styleClass="action-button" text="Magical Attack">
+            <Button mnemonicParsing="false" onAction="#onMagicClick" styleClass="action-button" text="Magical Attack">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin></Button>
          </children>
       </VBox>
+      <Label fx:id="playerHealthText" layoutX="263.0" layoutY="78.0" text="100" textFill="RED" AnchorPane.leftAnchor="263.0" AnchorPane.topAnchor="78.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="enemyHealthText" layoutX="995.0" layoutY="79.0" text="100" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="combatLog" layoutX="560.0" layoutY="371.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="371.0" />
    </children>
 </AnchorPane>

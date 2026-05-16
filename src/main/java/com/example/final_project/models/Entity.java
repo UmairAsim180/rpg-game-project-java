@@ -1,4 +1,4 @@
-package models;
+package com.example.final_project.models;
 
 public abstract  class Entity {
     protected String name;

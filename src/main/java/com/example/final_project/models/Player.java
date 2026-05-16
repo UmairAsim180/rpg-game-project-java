@@ -1,4 +1,4 @@
-package models;
+package com.example.final_project.models;
 
 public class Player extends Entity {
     private int level;
