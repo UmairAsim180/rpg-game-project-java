@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import com.example.final_project.models.BossEnemy;
 import com.example.final_project.models.Enemy;
@@ -29,6 +31,15 @@ public class BattleController {
     @FXML private Label enemyLog;
     @FXML private Label enemyNameLabel;
     @FXML private Label playerNameLabel;
+    // --- Image UI Elements ---
+    @FXML private ImageView playerImageView;
+    @FXML private ImageView enemyImageView;
+
+    // --- Image Storage ---
+    private Image playerRestImg;
+    private Image playerAttackImg;
+    private Image enemyRestImg;
+    private Image enemyAttackImg;
 
     // --- 2. Game Models & State Trackers ---
     private Player player;
@@ -54,6 +65,16 @@ public class BattleController {
         currentLevel = 1;
         enemiesDefeatedThisLevel = 0;
         magicCooldown = 0;
+
+        // LOAD IMAGES
+        try {
+            playerRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-rest.png"));
+            playerAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-attack.png"));
+            enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest.png"));
+            enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack.png"));
+        } catch (Exception e) {
+            System.out.println("Warning: Could not load images. Check filenames!");
+        }
     }
 
     private void spawnNextEnemy() {
@@ -67,6 +88,8 @@ public class BattleController {
 
         showLevelDisplayTemporary("Level " + currentLevel);
         enemyNameLabel.setText(currentEnemy.getName());
+        if (playerImageView != null) playerImageView.setImage(playerRestImg);
+        if (enemyImageView != null) enemyImageView.setImage(enemyRestImg);
         updateUI();
     }
 
@@ -77,6 +100,7 @@ public class BattleController {
 
         int damage = player.attack();
         currentEnemy.takeDamage(damage);
+        triggerPlayerAttackAnimation();
         showEnemyLogTemporary("-" + damage, "red");
 
         if (currentEnemy instanceof BossEnemy) {
@@ -114,6 +138,7 @@ public class BattleController {
 
         int magicDamage = player.magicAttack();
         currentEnemy.takeDamage(magicDamage);
+        triggerPlayerAttackAnimation();
         showEnemyLogTemporary("-" + magicDamage, "purple");
 
         magicCooldown = 3; // Reset the cooldown to 3 turns
@@ -171,6 +196,7 @@ public class BattleController {
         int actualDamage = Math.max(0, enemyRawDamage - player.getDefenseReduction());
 
         player.takeDamage(actualDamage);
+        triggerEnemyAttackAnimation();
         player.resetDefense();
         showPlayerLogTemporary("-" + actualDamage, "red");
 
@@ -238,5 +264,26 @@ public class BattleController {
         PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
         pause.setOnFinished(event -> enemyLog.setText(""));
         pause.play();
+    }
+    // --- Image Animation Helpers ---
+    private void triggerPlayerAttackAnimation() {
+        // Only run if the image box actually exists
+        if (playerImageView != null && playerAttackImg != null) {
+            playerImageView.setImage(playerAttackImg); // Swap to attack pose
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> playerImageView.setImage(playerRestImg)); // Swap back
+            pause.play();
+        }
+    }
+
+    private void triggerEnemyAttackAnimation() {
+        if (enemyImageView != null && enemyAttackImg != null) {
+            enemyImageView.setImage(enemyAttackImg); // Swap to attack pose
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> enemyImageView.setImage(enemyRestImg)); // Swap back
+            pause.play();
+        }
     }
 }
