@@ -14,7 +14,7 @@
    <children>
       <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="35.0" layoutY="35.0" pickOnBounds="true" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="35.0">
          <image>
-            <Image url="@../../../../../../../../Downloads/wallpaperflare.com_wallpaper%20(3).jpg" />
+            <Image url="@player-avatar.png" />
          </image>
       </ImageView>
       <ProgressBar layoutX="167.0" layoutY="65.0" prefHeight="25.0" prefWidth="250.0" progress="0.61" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="75.0" />
@@ -25,7 +25,7 @@
       </Label>
       <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="1245.0" layoutY="35.0" pickOnBounds="true" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
          <image>
-            <Image url="@../../../../../../../../Downloads/wallpaperflare.com_wallpaper%20(1).jpg" />
+            <Image url="@enemy-avatar.png" />
          </image>
       </ImageView>
       <ProgressBar layoutX="862.0" layoutY="77.0" prefHeight="25.0" prefWidth="250.0" progress="0.33" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="75.0" />
