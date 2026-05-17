@@ -1,6 +1,6 @@
 package com.example.final_project.models;
 
-public abstract  class Entity {
+public abstract  class Entity{
     protected String name;
     protected int maxHealth;
     protected int currentHealth;
