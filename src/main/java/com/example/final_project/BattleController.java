@@ -52,14 +52,6 @@ public class BattleController {
     // NEW: Cooldown timer to prevent magic spamming!
     private int magicCooldown = 0;
 
-    // --- 3. Initialization ---
-    public void setPlayerName(String name) {
-        this.playerName = name;
-        playerNameLabel.setText(name);
-        player = new Player(playerName);
-        spawnNextEnemy();
-    }
-
     @FXML
     public void initialize() {
         currentLevel = 1;
@@ -76,6 +68,16 @@ public class BattleController {
             System.out.println("Warning: Could not load images. Check filenames!");
         }
     }
+
+    // --- 3. Initialization ---
+    public void setPlayerName(String name) {
+        this.playerName = name;
+        playerNameLabel.setText(name);
+        player = new Player(playerName);
+        spawnNextEnemy();
+    }
+
+
 
     private void spawnNextEnemy() {
         if (currentLevel == 1) {
@@ -150,7 +152,6 @@ public class BattleController {
         updateUI();
 
         if (currentEnemy.isDead()) {
-            player.gainExperience(currentEnemy.getReward());
             enemiesDefeatedThisLevel++;
 
             if (currentLevel == 3) {
