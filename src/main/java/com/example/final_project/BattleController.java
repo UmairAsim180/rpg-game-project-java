@@ -1,6 +1,7 @@
 package com.example.final_project;
 
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import com.example.final_project.models.BossEnemy;
 import com.example.final_project.models.Enemy;
@@ -22,18 +25,29 @@ import java.io.IOException;
 public class BattleController {
 
     // --- 1. UI Elements ---
-    @FXML private ProgressBar playerHealthBar;
-    @FXML private ProgressBar enemyHealthBar;
-    @FXML private Label playerHealthText;
-    @FXML private Label enemyHealthText;
-    @FXML private Label lvlDisplay;
-    @FXML private Label playerLog;
-    @FXML private Label enemyLog;
-    @FXML private Label enemyNameLabel;
-    @FXML private Label playerNameLabel;
+    @FXML
+    private ProgressBar playerHealthBar;
+    @FXML
+    private ProgressBar enemyHealthBar;
+    @FXML
+    private Label playerHealthText;
+    @FXML
+    private Label enemyHealthText;
+    @FXML
+    private Label lvlDisplay;
+    @FXML
+    private Label playerLog;
+    @FXML
+    private Label enemyLog;
+    @FXML
+    private Label enemyNameLabel;
+    @FXML
+    private Label playerNameLabel;
     // --- Image UI Elements ---
-    @FXML private ImageView playerImageView;
-    @FXML private ImageView enemyImageView;
+    @FXML
+    private ImageView playerImageView;
+    @FXML
+    private ImageView enemyImageView;
 
     // --- Image Storage ---
     private Image playerRestImg;
@@ -67,6 +81,30 @@ public class BattleController {
         } catch (Exception e) {
             System.out.println("Warning: Could not load images. Check filenames!");
         }
+        Platform.runLater(() -> {
+            // Grab the current scene from any UI element
+            Scene scene = playerHealthBar.getScene();
+
+            if (scene != null) {
+                scene.setOnKeyPressed((KeyEvent event) -> {
+                    // Check which key was pressed
+                    KeyCode key = event.getCode();
+
+                    // A or 1 = Attack
+                    if (key == KeyCode.A || key == KeyCode.DIGIT1 || key == KeyCode.NUMPAD1) {
+                        onAttackClick(null);
+                    }
+                    // D or 2 = Defend
+                    else if (key == KeyCode.D || key == KeyCode.DIGIT2 || key == KeyCode.NUMPAD2) {
+                        onDefendClick(null);
+                    }
+                    // M or 3 = Magic
+                    else if (key == KeyCode.M || key == KeyCode.DIGIT3 || key == KeyCode.NUMPAD3) {
+                        onMagicClick(null);
+                    }
+                });
+            }
+        });
     }
 
     // --- 3. Initialization ---
@@ -76,7 +114,6 @@ public class BattleController {
         player = new Player(playerName);
         spawnNextEnemy();
     }
-
 
 
     private void spawnNextEnemy() {
@@ -156,12 +193,11 @@ public class BattleController {
 
             if (currentLevel == 3) {
                 switchToGameOverScreen(true, "You have slain the Boss and conquered the game!");
-            }
-            else if (enemiesDefeatedThisLevel == 2) {
+            } else if (enemiesDefeatedThisLevel == 2) {
                 currentLevel++;
                 enemiesDefeatedThisLevel = 0;
 
-                showLevelDisplayTemporary("Level " + (currentLevel-1) + " Cleared!");
+                showLevelDisplayTemporary("Level " + (currentLevel - 1) + " Cleared!");
 
                 player.heal(40);
                 showPlayerLogTemporary("+40", "green");
@@ -170,8 +206,7 @@ public class BattleController {
                 PauseTransition wait = new PauseTransition(Duration.seconds(2));
                 wait.setOnFinished(e -> spawnNextEnemy());
                 wait.play();
-            }
-            else {
+            } else {
                 // Wait 1.5 seconds before spawning the next enemy of the current level
                 PauseTransition wait = new PauseTransition(Duration.seconds(1.5));
                 wait.setOnFinished(e -> spawnNextEnemy());
@@ -266,6 +301,7 @@ public class BattleController {
         pause.setOnFinished(event -> enemyLog.setText(""));
         pause.play();
     }
+
     // --- Image Animation Helpers ---
     private void triggerPlayerAttackAnimation() {
         // Only run if the image box actually exists
