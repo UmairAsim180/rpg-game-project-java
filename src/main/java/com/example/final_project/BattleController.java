@@ -22,6 +22,7 @@ import com.example.final_project.models.NormalEnemy;
 import com.example.final_project.models.Player;
 import javafx.util.Duration;
 
+import javafx.scene.media.AudioClip;
 import java.io.IOException;
 
 public class BattleController {
@@ -62,8 +63,14 @@ public class BattleController {
     private Enemy currentEnemy;
     private String playerName;
 
+    private AudioClip hitSound;
+    private AudioClip shieldSound;
+    private AudioClip enemyHitSound;
+    private AudioClip magicSound;
+
     private int currentLevel = 1;
     private int enemiesDefeatedThisLevel = 0;
+
 
     // NEW: Cooldown timer to prevent magic spamming!
     private int magicCooldown = 0;
@@ -73,6 +80,15 @@ public class BattleController {
         currentLevel = 1;
         enemiesDefeatedThisLevel = 0;
         magicCooldown = 0;
+        // LOAD SOUNDS
+        try {
+            hitSound = new AudioClip(getClass().getResource("/com/example/final_project/hit.mp3").toExternalForm());
+            shieldSound = new AudioClip(getClass().getResource("/com/example/final_project/shield.mp3").toExternalForm());
+            enemyHitSound = new AudioClip(getClass().getResource("/com/example/final_project/enemy_hit.mp3").toExternalForm());
+            magicSound = new AudioClip(getClass().getResource("/com/example/final_project/magic.mp3").toExternalForm());
+        } catch (Exception e) {
+            System.out.println("Warning: Could not load audio files. Check filenames!");
+        }
 
         // LOAD IMAGES
         try {
@@ -142,6 +158,9 @@ public class BattleController {
         int damage = player.attack();
         currentEnemy.takeDamage(damage);
         triggerPlayerAttackAnimation();
+        if (hitSound != null) {
+            hitSound.play();
+        }
         showEnemyLogTemporary("-" + damage, "red");
 
         if (currentEnemy instanceof BossEnemy) {
@@ -158,6 +177,7 @@ public class BattleController {
         if (player.isDead() || currentEnemy.isDead()) return;
 
         player.defend();
+        if (shieldSound != null) shieldSound.play();
         showPlayerLogTemporary("+5", "green");
         updateUI();
 
@@ -176,7 +196,9 @@ public class BattleController {
             showPlayerLogTemporary("Cooldown: " + magicCooldown, "gray");
             return; // Stop the attack
         }
-
+        if (magicSound != null) {
+            magicSound.play();
+        }
         int magicDamage = player.magicAttack();
         currentEnemy.takeDamage(magicDamage);
         triggerPlayerAttackAnimation();
@@ -234,6 +256,7 @@ public class BattleController {
         int actualDamage = Math.max(0, enemyRawDamage - player.getDefenseReduction());
 
         player.takeDamage(actualDamage);
+        if (enemyHitSound != null) enemyHitSound.play();
         triggerEnemyAttackAnimation();
         player.resetDefense();
         showPlayerLogTemporary("-" + actualDamage, "red");
@@ -325,6 +348,7 @@ public class BattleController {
             pause.play();
         }
     }
+
     private void triggerDamageVignette() {
         // 1. Create a deep red, soft inner shadow
         InnerShadow bloodBorder = new InnerShadow();
