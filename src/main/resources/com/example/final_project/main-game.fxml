@@ -67,7 +67,7 @@
       </Label>
       <Label fx:id="enemyHealthText" layoutX="995.0" layoutY="79.0" text="100" textFill="RED">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Label>
       <Label fx:id="lvlDisplay" layoutX="577.0" layoutY="209.0" text="Level 1" textAlignment="CENTER" textFill="#fbff00" AnchorPane.leftAnchor="577.0" AnchorPane.topAnchor="209.0">
