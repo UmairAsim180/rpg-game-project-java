@@ -9,10 +9,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import com.example.final_project.models.BossEnemy;
 import com.example.final_project.models.Enemy;
@@ -235,7 +237,7 @@ public class BattleController {
         triggerEnemyAttackAnimation();
         player.resetDefense();
         showPlayerLogTemporary("-" + actualDamage, "red");
-
+        triggerDamageVignette();
         updateUI();
 
         if (player.isDead()) {
@@ -320,6 +322,23 @@ public class BattleController {
 
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
             pause.setOnFinished(e -> enemyImageView.setImage(enemyRestImg)); // Swap back
+            pause.play();
+        }
+    }
+    private void triggerDamageVignette() {
+        // 1. Create a deep red, soft inner shadow
+        InnerShadow bloodBorder = new InnerShadow();
+        bloodBorder.setColor(Color.DARKRED);
+        bloodBorder.setRadius(120); // How far the blood spreads into the center
+        bloodBorder.setChoke(0.3);  // How thick and intense the edges are
+
+        // 2. Apply it to the absolute root background of your game window
+        if (playerHealthBar.getScene() != null) {
+            playerHealthBar.getScene().getRoot().setEffect(bloodBorder);
+
+            // 3. Make it disappear after 0.5 seconds so it flashes quickly!
+            PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+            pause.setOnFinished(e -> playerHealthBar.getScene().getRoot().setEffect(null));
             pause.play();
         }
     }
