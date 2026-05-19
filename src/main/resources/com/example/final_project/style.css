@@ -144,3 +144,9 @@
     -fx-text-fill: #ffd700; /* A nice Gold RPG color */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 2, 2);
 }
+.rules-label-heading{
+    -fx-text-fill: #d4af37;
+    -fx-font-size: 24px;
+    -fx-font-style: bold;
+    -fx-font-family: "Palatino Linotype";
+}

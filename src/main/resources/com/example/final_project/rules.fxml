@@ -29,7 +29,7 @@
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="2.0">
                      <children>
-                        <Label text="ATTACK:" textFill="#d4af37">
+                        <Label styleClass="rules-label-heading" text="ATTACK:" textFill="#d4af37">
                            <font>
                               <Font name="Palatino Linotype Bold" size="24.0" />
                            </font>
@@ -39,7 +39,7 @@
                               <Font name="Calibri" size="24.0" />
                            </font>
                         </Label>
-                        <Label text="DEFEND:" textFill="#d4af37">
+                        <Label styleClass="rules-label-heading" text="DEFEND:" textFill="#d4af37">
                            <font>
                               <Font name="Palatino Linotype Bold" size="24.0" />
                            </font>
@@ -49,17 +49,17 @@
                               <Font name="Calibri" size="24.0" />
                            </font>
                         </Label>
-                        <Label text="MAGIC:" textFill="#d4af37">
+                        <Label styleClass="rules-label-heading" text="MAGIC:" textFill="#d4af37">
                            <font>
                               <Font name="Palatino Linotype Bold" size="24.0" />
                            </font>
                         </Label>
-                        <Label text=" Cast a powerful spell. Deals massive damage but has a 3-turn cooldown!" textFill="#e8e8e8">
+                        <Label text="Cast a powerful spell. Deals massive damage but has a 3-turn cooldown!" textFill="#e8e8e8">
                            <font>
                               <Font name="Calibri" size="24.0" />
                            </font>
                         </Label>
-                        <Label text=" LEVEL UP:" textFill="#d4af37">
+                        <Label styleClass="rules-label-heading" text="LEVEL UP:" textFill="#d4af37">
                            <font>
                               <Font name="Palatino Linotype Bold" size="24.0" />
                            </font>
@@ -69,12 +69,12 @@
                               <Font name="Calibri" size="24.0" />
                            </font>
                         </Label>
-                        <Label text="BOSS BATTLE:" textFill="#d4af37">
+                        <Label styleClass="rules-label-heading" text="BOSS BATTLE:" textFill="#d4af37">
                            <font>
                               <Font name="Palatino Linotype Bold" size="24.0" />
                            </font>
                         </Label>
-                        <Label text=" The final boss awaits at Level 3. Watch out for its Phase 2 Enrage!">
+                        <Label text="The final boss awaits at Level 3. Watch out for its Phase 2 Enrage!">
                            <font>
                               <Font name="Calibri" size="24.0" />
                            </font>

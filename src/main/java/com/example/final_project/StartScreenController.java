@@ -52,7 +52,7 @@ public class StartScreenController {
     @FXML
     public void onHowToPlayClick(ActionEvent event) throws IOException {
         // Load the new Rules screen!
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/final_project/how-to-play.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/final_project/rules.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 1280, 720);
