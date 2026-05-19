@@ -1,14 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="721.0" prefWidth="1295.0" styleClass="start-screen-root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.final_project.RulesController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="297.0" layoutY="361.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: rgba(10,12,18,0.88); -fx-background-radius: 10: 10;; -fx-border-color: #d4af37;; -fx-border-width: 1.5;; -fx-border-radius: 10;;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <Label style="-fx-background-color: rgba(10,12,18,0.88);;" text="How To Play?" textAlignment="JUSTIFY" textFill="#d4af37">
+               <font>
+                  <Font name="Palatino Linotype Bold" size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="28.0" />
+               </VBox.margin>
+            </Label>
+            <Label maxWidth="1.7976931348623157E308" prefHeight="2.0" style="-fx-background-color: #d4af37; -fx-opacity:: 0.6;;">
+               <VBox.margin>
+                  <Insets bottom="16.0" left="40.0" right="40.0" />
+               </VBox.margin>
+            </Label>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background: transparent;; -fx-background-color: transparent;; fx-border-color: transparent;;" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="2.0">
+                     <children>
+                        <Label text="ATTACK:" textFill="#d4af37">
+                           <font>
+                              <Font name="Palatino Linotype Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label lineSpacing="4.0" text="Strike the enemy. Damage scales with your current Level." textFill="#e8e8e8" wrapText="true">
+                           <font>
+                              <Font name="Calibri" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text="DEFEND:" textFill="#d4af37">
+                           <font>
+                              <Font name="Palatino Linotype Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label lineSpacing="4.0" text="Raise your shield. Restores 5 HP and reduces the enemy's next attack." wrapText="true">
+                           <font>
+                              <Font name="Calibri" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text="MAGIC:" textFill="#d4af37">
+                           <font>
+                              <Font name="Palatino Linotype Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text=" Cast a powerful spell. Deals massive damage but has a 3-turn cooldown!" textFill="#e8e8e8">
+                           <font>
+                              <Font name="Calibri" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text=" LEVEL UP:" textFill="#d4af37">
+                           <font>
+                              <Font name="Palatino Linotype Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label minHeight="65.0" text="Defeat enemies to gain XP. Leveling up fully restores health and increases your stats." wrapText="true">
+                           <font>
+                              <Font name="Calibri" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text="BOSS BATTLE:" textFill="#d4af37">
+                           <font>
+                              <Font name="Palatino Linotype Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text=" The final boss awaits at Level 3. Watch out for its Phase 2 Enrage!">
+                           <font>
+                              <Font name="Calibri" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="40.0" right="40.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </padding>
+      </VBox>
+      <Button layoutX="1157.0" layoutY="614.0" mnemonicParsing="false" onAction="#onBackClick" styleClass="action-button" text="Back">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
 </AnchorPane>
