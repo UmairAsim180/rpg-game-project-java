@@ -46,6 +46,7 @@ public class BattleController {
     private Label enemyNameLabel;
     @FXML
     private Label playerNameLabel;
+    @FXML private Label playerStatsLabel;
     // --- Image UI Elements ---
     @FXML
     private ImageView playerImageView;
@@ -215,29 +216,43 @@ public class BattleController {
         if (currentEnemy.isDead()) {
             enemiesDefeatedThisLevel++;
 
+            // --- NEW: THE LEVEL UP DETECTOR ---
+            int oldLevel = player.getLevel(); // Remember our level
+            player.gainExperience(currentEnemy.getReward()); // Give the XP
+
+            // Check if our level went up!
+            if (player.getLevel() > oldLevel) {
+                showLevelDisplayTemporary("LEVEL UP! (Lvl " + player.getLevel() + ")");
+                showPlayerLogTemporary("MAX HP & DMG UP!", "gold");
+
+                // Play a cool sound for leveling up if you have one!
+                if (magicSound != null) magicSound.play();
+            }
+            // ----------------------------------
+
             if (currentLevel == 3) {
                 switchToGameOverScreen(true, "You have slain the Boss and conquered the game!");
-            } else if (enemiesDefeatedThisLevel == 2) {
+            }
+            else if (enemiesDefeatedThisLevel == 2) {
                 currentLevel++;
                 enemiesDefeatedThisLevel = 0;
 
                 showLevelDisplayTemporary("Level " + (currentLevel - 1) + " Cleared!");
 
+                // Heal the player between rounds
                 player.heal(40);
-                showPlayerLogTemporary("+40", "green");
+                showPlayerLogTemporary("+40 HP", "green");
 
-                // Wait 2 seconds so the player can read "Level Cleared" before spawning the next enemy
                 PauseTransition wait = new PauseTransition(Duration.seconds(2));
                 wait.setOnFinished(e -> spawnNextEnemy());
                 wait.play();
-            } else {
-                // Wait 1.5 seconds before spawning the next enemy of the current level
+            }
+            else {
                 PauseTransition wait = new PauseTransition(Duration.seconds(1.5));
                 wait.setOnFinished(e -> spawnNextEnemy());
                 wait.play();
             }
         } else {
-            // Wait 1.2 seconds before the enemy hits back
             PauseTransition wait = new PauseTransition(Duration.seconds(1.2));
             wait.setOnFinished(e -> enemyTurn());
             wait.play();
@@ -278,6 +293,11 @@ public class BattleController {
 
         playerHealthText.setText(player.getCurrentHealth() + " / " + player.getMaxHealth() + " HP");
         enemyHealthText.setText(currentEnemy.getCurrentHealth() + " / " + currentEnemy.getMaxHealth() + " HP");
+
+        // --- NEW: Update the XP/Level Text ---
+        if (playerStatsLabel != null) {
+            playerStatsLabel.setText("Lvl: " + player.getLevel() + " | XP: " + player.getExperience() + " / " + player.getExpNeeded());
+        }
     }
 
     private void switchToGameOverScreen(boolean playerWon, String message) {

@@ -55,4 +55,8 @@ public class BossEnemy extends Enemy{
     public int getTurnCounter() {
         return turnCounter;
     }
+    @Override
+    public int getReward() {
+        return 500; // Massive XP drop for the final boss!
+    }
 }

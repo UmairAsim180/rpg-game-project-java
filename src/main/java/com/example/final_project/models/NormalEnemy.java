@@ -18,6 +18,11 @@ public class NormalEnemy extends Enemy{
     public int chooseAction(){
         return basicAttack();
     }
+    @Override
+    public int getReward() {
+        // Level 1 enemies give 40 XP. Level 2 enemies give 80 XP.
+        return 40 * spawnLevel;
+    }
     public int getSpawnLevel() {
         return spawnLevel;
     }

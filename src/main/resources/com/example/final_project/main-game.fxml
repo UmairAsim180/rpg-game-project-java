@@ -85,5 +85,10 @@
             <Font name="Calibri Bold" size="36.0" />
          </font>
       </Label>
+      <Label fx:id="playerStatsLabel" layoutX="186.0" layoutY="127.0" text="Label" textFill="#ed5959">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
