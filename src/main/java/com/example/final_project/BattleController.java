@@ -23,6 +23,7 @@ import com.example.final_project.models.Player;
 import javafx.util.Duration;
 
 import javafx.scene.media.AudioClip;
+
 import java.io.IOException;
 
 public class BattleController {
@@ -46,7 +47,8 @@ public class BattleController {
     private Label enemyNameLabel;
     @FXML
     private Label playerNameLabel;
-    @FXML private Label playerStatsLabel;
+    @FXML
+    private Label playerStatsLabel;
     // --- Image UI Elements ---
     @FXML
     private ImageView playerImageView;
@@ -56,6 +58,7 @@ public class BattleController {
     // --- Image Storage ---
     private Image playerRestImg;
     private Image playerAttackImg;
+    private Image playerMagicImg;
     private Image enemyRestImg;
     private Image enemyAttackImg;
 
@@ -93,13 +96,12 @@ public class BattleController {
 
         // LOAD IMAGES
         try {
-            playerRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-rest.png"));
-            playerAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-attack.png"));
             enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest.png"));
             enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack.png"));
         } catch (Exception e) {
-            System.out.println("Warning: Could not load images. Check filenames!");
+            System.out.println("Warning: Could not load enemy images. Check filenames!");
         }
+        loadPlayerImages(currentLevel);
         Platform.runLater(() -> {
             // Grab the current scene from any UI element
             Scene scene = playerHealthBar.getScene();
@@ -143,7 +145,7 @@ public class BattleController {
         } else if (currentLevel == 3) {
             currentEnemy = new BossEnemy("Dark Knight", "Hellfire Strike");
         }
-
+        loadEnemyImages(currentLevel);
         showLevelDisplayTemporary("Level " + currentLevel);
         enemyNameLabel.setText(currentEnemy.getName());
         if (playerImageView != null) playerImageView.setImage(playerRestImg);
@@ -202,7 +204,7 @@ public class BattleController {
         }
         int magicDamage = player.magicAttack();
         currentEnemy.takeDamage(magicDamage);
-        triggerPlayerAttackAnimation();
+        triggerPlayerMagicAnimation();
         showEnemyLogTemporary("-" + magicDamage, "purple");
 
         magicCooldown = 3; // Reset the cooldown to 3 turns
@@ -232,11 +234,10 @@ public class BattleController {
 
             if (currentLevel == 3) {
                 switchToGameOverScreen(true, "You have slain the Boss and conquered the game!");
-            }
-            else if (enemiesDefeatedThisLevel == 2) {
+            } else if (enemiesDefeatedThisLevel == 2) {
                 currentLevel++;
                 enemiesDefeatedThisLevel = 0;
-
+                loadPlayerImages(currentLevel);
                 showLevelDisplayTemporary("Level " + (currentLevel - 1) + " Cleared!");
 
                 // Heal the player between rounds
@@ -246,8 +247,7 @@ public class BattleController {
                 PauseTransition wait = new PauseTransition(Duration.seconds(2));
                 wait.setOnFinished(e -> spawnNextEnemy());
                 wait.play();
-            }
-            else {
+            } else {
                 PauseTransition wait = new PauseTransition(Duration.seconds(1.5));
                 wait.setOnFinished(e -> spawnNextEnemy());
                 wait.play();
@@ -359,6 +359,16 @@ public class BattleController {
         }
     }
 
+    private void triggerPlayerMagicAnimation() {
+        if (playerImageView != null && playerMagicImg != null) {
+            playerImageView.setImage(playerMagicImg); // Swap to magic pose
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> playerImageView.setImage(playerRestImg)); // Swap back
+            pause.play();
+        }
+    }
+
     private void triggerEnemyAttackAnimation() {
         if (enemyImageView != null && enemyAttackImg != null) {
             enemyImageView.setImage(enemyAttackImg); // Swap to attack pose
@@ -384,6 +394,62 @@ public class BattleController {
             PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
             pause.setOnFinished(e -> playerHealthBar.getScene().getRoot().setEffect(null));
             pause.play();
+        }
+    }
+
+    // --- Dynamic Asset Loader ---
+    private void loadPlayerImages(int level) {
+        try {
+            if (level == 1) {
+                // Level 1 Gear
+                playerRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-rest.png"));
+                playerAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-attack.png"));
+                // You don't have a level 1 magic image, so we use the attack one as a fallback!
+                playerMagicImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-magic.png"));
+            } else if (level == 2) {
+                // Level 2 Gear
+                playerRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-rest-lvl2.png"));
+                playerAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-attack-lvl2.png"));
+                playerMagicImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-magic-lvl2.png"));
+            } else {
+                // Level 3 Boss Fight Gear
+                playerRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-rest-lvl3.png"));
+                playerAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-attack-lvl3.png"));
+                playerMagicImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-magic-lvl3.png"));
+            }
+
+            // Instantly apply the resting image to the screen
+            if (playerImageView != null) {
+                playerImageView.setImage(playerRestImg);
+            }
+        } catch (Exception e) {
+            System.out.println("Warning: Could not load player images for Level " + level);
+        }
+
+    }
+
+    private void loadEnemyImages(int level) {
+        try {
+            if (level == 1) {
+                // Level 1 Goblin/Scout
+                enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest-lvl1.png"));
+                enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack-lvl1.png"));
+            } else if (level == 2) {
+                // Level 2 Orc/Warrior
+                enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest-lvl2.png"));
+                enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack-lvl2.png"));
+            } else {
+                // Level 3 Boss (The Demon!)
+                enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest.png"));
+                enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack.png"));
+            }
+
+            // Instantly apply the resting image to the screen
+            if (enemyImageView != null) {
+                enemyImageView.setImage(enemyRestImg);
+            }
+        } catch (Exception e) {
+            System.out.println("Warning: Could not load enemy images for Level " + level);
         }
     }
 }
