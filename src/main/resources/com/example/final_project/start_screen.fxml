@@ -41,6 +41,7 @@
                </padding>
             </Label>
             <Button mnemonicParsing="false" onAction="#onClickStart" prefHeight="25.0" prefWidth="250.0" text="Start Game" />
+            <Button mnemonicParsing="false" onAction="#onHowToPlayClick" prefHeight="25.0" prefWidth="250.0" text="How To Play" />
             <Button mnemonicParsing="false" onAction="#onExitClick" prefHeight="25.0" prefWidth="250.0" text="Exit" />
          </children>
       </VBox>
