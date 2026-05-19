@@ -129,3 +129,18 @@
     -fx-text-fill: rgba(255, 255, 255, 0.3); /* Much more subtle */
     -fx-font-size: 13px;
 }
+.name-label {
+    -fx-font-family: "System";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    /* This adds a black shadow behind the text so it pops off the background! */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 2, 2);
+}
+.stats-label {
+    -fx-font-family: "System";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffd700; /* A nice Gold RPG color */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 2, 2);
+}

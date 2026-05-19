@@ -18,9 +18,9 @@
          </image>
       </ImageView>
       <ProgressBar fx:id="playerHealthBar" layoutX="167.0" layoutY="65.0" prefHeight="25.0" prefWidth="250.0" progress="0.61" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="75.0" />
-      <Label fx:id="playerNameLabel" layoutX="250.0" layoutY="35.0" text="Umair" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="35.0">
+      <Label fx:id="playerNameLabel" layoutX="250.0" layoutY="35.0" styleClass="name-label" text="Umair" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="35.0">
          <font>
-            <Font name="Calibri" size="24.0" />
+            <Font name="Calibri Bold" size="24.0" />
          </font>
       </Label>
       <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="1245.0" layoutY="35.0" pickOnBounds="true" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
@@ -29,7 +29,7 @@
          </image>
       </ImageView>
       <ProgressBar fx:id="enemyHealthBar" layoutX="862.0" layoutY="77.0" prefHeight="25.0" prefWidth="250.0" progress="0.33" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="75.0" />
-      <Label fx:id="enemyNameLabel" layoutX="1030.0" layoutY="35.0" text="Enemy" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="35.0">
+      <Label fx:id="enemyNameLabel" layoutX="1030.0" layoutY="35.0" styleClass="name-label" text="Enemy" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="35.0">
          <font>
             <Font size="24.0" />
          </font>
@@ -85,7 +85,7 @@
             <Font name="Calibri Bold" size="36.0" />
          </font>
       </Label>
-      <Label fx:id="playerStatsLabel" layoutX="186.0" layoutY="127.0" text="Label" textFill="#ed5959">
+      <Label fx:id="playerStatsLabel" layoutX="191.0" layoutY="121.0" styleClass="stats-label" text="Lvl: 1 | XP: 0 / 60" textFill="#ed5959" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
          <font>
             <Font size="36.0" />
          </font>

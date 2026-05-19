@@ -28,7 +28,7 @@ public class StartScreenController {
             startErrorLabel.setText("Username is Required");
             return;
         }
-            startErrorLabel.setText("");
+        startErrorLabel.setText("");
 
         // 1. Set up the loader, but don't just load it instantly
         FXMLLoader loader = new FXMLLoader(getClass().getResource("main-game.fxml"));
@@ -47,6 +47,19 @@ public class StartScreenController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(newScene);
         stage.show();
+    }
+
+    @FXML
+    public void onHowToPlayClick(ActionEvent event) throws IOException {
+        // Load the new Rules screen!
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/final_project/how-to-play.fxml"));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root, 1280, 720);
+        scene.getStylesheets().add(getClass().getResource("/com/example/final_project/style.css").toExternalForm());
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
     }
 
     @FXML
