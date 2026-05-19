@@ -2,17 +2,15 @@ package com.example.final_project.models;
 
 public class NormalEnemy extends Enemy{
     private int spawnLevel;
-    private int attackPower;
 
     public NormalEnemy(String name,int spawnLevel){
-        super(name,"Normal",50+(spawnLevel*20),10+(spawnLevel*40));
+        super(name,"Normal",50+(spawnLevel*20),6 + (spawnLevel * 2));
         this.spawnLevel = spawnLevel;
-        this.attackPower = 6 + (spawnLevel * 2);
     }
 
     public int basicAttack(){
         int randomBonus = (int)(Math.random() * 6);
-        return attackPower + randomBonus;
+        return getDamage() + randomBonus;
     }
     @Override
     public int chooseAction(){

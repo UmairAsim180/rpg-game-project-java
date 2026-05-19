@@ -17,7 +17,7 @@ public abstract  class Entity{
         currentHealth = Math.max(0, currentHealth - amount);
     }
 
-    public void heal(int amount) {
+    public void heal(int amount){
         currentHealth = Math.min(maxHealth, currentHealth + amount);
     }
 
