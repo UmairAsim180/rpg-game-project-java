@@ -10,7 +10,6 @@ public abstract class Enemy extends Entity {
 
     public abstract int chooseAction();
 
-    // ---> ADD THIS ABSTRACT METHOD <---
     public abstract int getReward();
 
     public String getEnemyType() {

@@ -28,7 +28,7 @@ import java.io.IOException;
 
 public class BattleController {
 
-    // --- 1. UI Elements ---
+
     @FXML
     private ProgressBar playerHealthBar;
     @FXML
@@ -49,20 +49,20 @@ public class BattleController {
     private Label playerNameLabel;
     @FXML
     private Label playerStatsLabel;
-    // --- Image UI Elements ---
+
     @FXML
     private ImageView playerImageView;
     @FXML
     private ImageView enemyImageView;
 
-    // --- Image Storage ---
+
     private Image playerRestImg;
     private Image playerAttackImg;
     private Image playerMagicImg;
     private Image enemyRestImg;
     private Image enemyAttackImg;
 
-    // --- 2. Game Models & State Trackers ---
+
     private Player player;
     private Enemy currentEnemy;
     private String playerName;
@@ -76,7 +76,7 @@ public class BattleController {
     private int enemiesDefeatedThisLevel = 0;
 
 
-    // NEW: Cooldown timer to prevent magic spamming!
+
     private int magicCooldown = 0;
 
     @FXML
@@ -84,7 +84,7 @@ public class BattleController {
         currentLevel = 1;
         enemiesDefeatedThisLevel = 0;
         magicCooldown = 0;
-        // LOAD SOUNDS
+
         try {
             hitSound = new AudioClip(getClass().getResource("/com/example/final_project/hit.mp3").toExternalForm());
             shieldSound = new AudioClip(getClass().getResource("/com/example/final_project/shield.mp3").toExternalForm());
@@ -94,7 +94,7 @@ public class BattleController {
             System.out.println("Warning: Could not load audio files. Check filenames!");
         }
 
-        // LOAD IMAGES
+
         try {
             enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest.png"));
             enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack.png"));
@@ -128,7 +128,7 @@ public class BattleController {
         });
     }
 
-    // --- 3. Initialization ---
+
     public void setPlayerName(String name) {
         this.playerName = name;
         playerNameLabel.setText(name);
@@ -153,7 +153,7 @@ public class BattleController {
         updateUI();
     }
 
-    // --- 4. Player Actions ---
+
     @FXML
     public void onAttackClick(ActionEvent event) {
         if (player.isDead() || currentEnemy.isDead()) return;
@@ -184,7 +184,6 @@ public class BattleController {
         showPlayerLogTemporary("+5", "green");
         updateUI();
 
-        // Wait 1.2 seconds for the player to see the heal before the enemy attacks
         PauseTransition wait = new PauseTransition(Duration.seconds(1.2));
         wait.setOnFinished(e -> enemyTurn());
         wait.play();
@@ -194,7 +193,7 @@ public class BattleController {
     public void onMagicClick(ActionEvent event) {
         if (player.isDead() || currentEnemy.isDead()) return;
 
-        // Check if magic is on cooldown!
+
         if (magicCooldown > 0) {
             showPlayerLogTemporary("Cooldown: " + magicCooldown, "gray");
             return; // Stop the attack
@@ -207,7 +206,7 @@ public class BattleController {
         triggerPlayerMagicAnimation();
         showEnemyLogTemporary("-" + magicDamage, "purple");
 
-        magicCooldown = 3; // Reset the cooldown to 3 turns
+        magicCooldown = 3;
         checkGameState();
     }
 
@@ -218,21 +217,21 @@ public class BattleController {
         if (currentEnemy.isDead()) {
             enemiesDefeatedThisLevel++;
 
-            // --- NEW: THE LEVEL UP DETECTOR ---
-            int oldLevel = player.getLevel(); // Remember our level
-            player.gainExperience(currentEnemy.getReward()); // Give the XP
 
-            // Check if our level went up!
+            int oldLevel = player.getLevel();
+            player.gainExperience(currentEnemy.getReward());
+
+
             if (player.getLevel() > oldLevel) {
                 showLevelDisplayTemporary("LEVEL UP! (Lvl " + player.getLevel() + ")");
                 showPlayerLogTemporary("MAX HP & DMG UP!", "gold");
 
-                // Play a cool sound for leveling up if you have one!
+
                 if (magicSound != null) magicSound.play();
             }
             // ----------------------------------
 
-            if (currentLevel == 3) {
+            if (currentLevel == 3){
                 switchToGameOverScreen(true, "You have slain the Boss and conquered the game!");
             } else if (enemiesDefeatedThisLevel == 2) {
                 currentLevel++;
@@ -240,7 +239,7 @@ public class BattleController {
                 loadPlayerImages(currentLevel);
                 showLevelDisplayTemporary("Level " + (currentLevel - 1) + " Cleared!");
 
-                // Heal the player between rounds
+
                 player.heal(40);
                 showPlayerLogTemporary("+40 HP", "green");
 
@@ -262,7 +261,7 @@ public class BattleController {
     private void enemyTurn() {
         if (currentEnemy.isDead()) return;
 
-        // Decrease the magic cooldown every time the enemy takes a turn
+
         if (magicCooldown > 0) {
             magicCooldown--;
         }
@@ -279,14 +278,14 @@ public class BattleController {
         updateUI();
 
         if (player.isDead()) {
-            // Wait 1.5 seconds so the player sees the final damage text before teleporting
+
             PauseTransition deathWait = new PauseTransition(Duration.seconds(1.5));
             deathWait.setOnFinished(e -> switchToGameOverScreen(false, "You fell in battle against the " + currentEnemy.getName() + "."));
             deathWait.play();
         }
     }
 
-    // --- 6. Teleportation & UI ---
+
     private void updateUI() {
         playerHealthBar.setProgress((double) player.getCurrentHealth() / player.getMaxHealth());
         enemyHealthBar.setProgress((double) currentEnemy.getCurrentHealth() / currentEnemy.getMaxHealth());
@@ -294,7 +293,7 @@ public class BattleController {
         playerHealthText.setText(player.getCurrentHealth() + " / " + player.getMaxHealth() + " HP");
         enemyHealthText.setText(currentEnemy.getCurrentHealth() + " / " + currentEnemy.getMaxHealth() + " HP");
 
-        // --- NEW: Update the XP/Level Text ---
+
         if (playerStatsLabel != null) {
             playerStatsLabel.setText("Lvl: " + player.getLevel() + " | XP: " + player.getExperience() + " / " + player.getExpNeeded());
         }
@@ -311,7 +310,7 @@ public class BattleController {
             Scene scene = new Scene(root, 1280, 720);
             scene.getStylesheets().add(getClass().getResource("/com/example/final_project/style.css").toExternalForm());
 
-            // Swapped combatLog for playerHealthBar to get the window stage safely
+
             Stage stage = (Stage) playerHealthBar.getScene().getWindow();
             stage.setScene(scene);
 
@@ -321,7 +320,7 @@ public class BattleController {
         }
     }
 
-    // --- 7. Temporary Text Helpers ---
+
     private void showLevelDisplayTemporary(String text) {
         lvlDisplay.setText(text);
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
@@ -347,78 +346,78 @@ public class BattleController {
         pause.play();
     }
 
-    // --- Image Animation Helpers ---
+
     private void triggerPlayerAttackAnimation() {
-        // Only run if the image box actually exists
+
         if (playerImageView != null && playerAttackImg != null) {
-            playerImageView.setImage(playerAttackImg); // Swap to attack pose
+            playerImageView.setImage(playerAttackImg);
 
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(e -> playerImageView.setImage(playerRestImg)); // Swap back
+            pause.setOnFinished(e -> playerImageView.setImage(playerRestImg));
             pause.play();
         }
     }
 
     private void triggerPlayerMagicAnimation() {
         if (playerImageView != null && playerMagicImg != null) {
-            playerImageView.setImage(playerMagicImg); // Swap to magic pose
+            playerImageView.setImage(playerMagicImg);
 
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(e -> playerImageView.setImage(playerRestImg)); // Swap back
+            pause.setOnFinished(e -> playerImageView.setImage(playerRestImg));
             pause.play();
         }
     }
 
     private void triggerEnemyAttackAnimation() {
         if (enemyImageView != null && enemyAttackImg != null) {
-            enemyImageView.setImage(enemyAttackImg); // Swap to attack pose
+            enemyImageView.setImage(enemyAttackImg);
 
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(e -> enemyImageView.setImage(enemyRestImg)); // Swap back
+            pause.setOnFinished(e -> enemyImageView.setImage(enemyRestImg));
             pause.play();
         }
     }
 
     private void triggerDamageVignette() {
-        // 1. Create a deep red, soft inner shadow
+
         InnerShadow bloodBorder = new InnerShadow();
         bloodBorder.setColor(Color.DARKRED);
-        bloodBorder.setRadius(120); // How far the blood spreads into the center
-        bloodBorder.setChoke(0.3);  // How thick and intense the edges are
+        bloodBorder.setRadius(120);
+        bloodBorder.setChoke(0.3);
 
-        // 2. Apply it to the absolute root background of your game window
+
         if (playerHealthBar.getScene() != null) {
             playerHealthBar.getScene().getRoot().setEffect(bloodBorder);
 
-            // 3. Make it disappear after 0.5 seconds so it flashes quickly!
+
             PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
             pause.setOnFinished(e -> playerHealthBar.getScene().getRoot().setEffect(null));
             pause.play();
         }
     }
 
-    // --- Dynamic Asset Loader ---
+
     private void loadPlayerImages(int level) {
         try {
             if (level == 1) {
-                // Level 1 Gear
+
                 playerRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-rest.png"));
                 playerAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-attack.png"));
-                // You don't have a level 1 magic image, so we use the attack one as a fallback!
+
                 playerMagicImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-magic.png"));
             } else if (level == 2) {
-                // Level 2 Gear
+
                 playerRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-rest-lvl2.png"));
                 playerAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-attack-lvl2.png"));
                 playerMagicImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-magic-lvl2.png"));
             } else {
-                // Level 3 Boss Fight Gear
+
                 playerRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-rest-lvl3.png"));
                 playerAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-attack-lvl3.png"));
                 playerMagicImg = new Image(getClass().getResourceAsStream("/com/example/final_project/player-magic-lvl3.png"));
             }
 
-            // Instantly apply the resting image to the screen
+
             if (playerImageView != null) {
                 playerImageView.setImage(playerRestImg);
             }
@@ -431,20 +430,20 @@ public class BattleController {
     private void loadEnemyImages(int level) {
         try {
             if (level == 1) {
-                // Level 1 Goblin/Scout
+
                 enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest-lvl1.png"));
                 enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack-lvl1.png"));
             } else if (level == 2) {
-                // Level 2 Orc/Warrior
+
                 enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest-lvl2.png"));
                 enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack-lvl2.png"));
             } else {
-                // Level 3 Boss (The Demon!)
+
                 enemyRestImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-rest.png"));
                 enemyAttackImg = new Image(getClass().getResourceAsStream("/com/example/final_project/enemy-attack.png"));
             }
 
-            // Instantly apply the resting image to the screen
+
             if (enemyImageView != null) {
                 enemyImageView.setImage(enemyRestImg);
             }

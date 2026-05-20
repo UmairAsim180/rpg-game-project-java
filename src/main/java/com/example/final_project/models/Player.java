@@ -33,7 +33,6 @@ public class Player extends Entity {
         this.heal(5);
     }
 
-    // --- MUST HAVE: The XP System so you can actually beat the boss! ---
     public void gainExperience(int exp) {
         experience += exp;
         if (experience >= getExpNeeded()) {

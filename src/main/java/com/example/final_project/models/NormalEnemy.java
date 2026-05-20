@@ -18,7 +18,7 @@ public class NormalEnemy extends Enemy{
     }
     @Override
     public int getReward() {
-        // Level 1 enemies give 40 XP. Level 2 enemies give 80 XP.
+
         return 40 * spawnLevel;
     }
     public int getSpawnLevel() {

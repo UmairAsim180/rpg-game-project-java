@@ -11,26 +11,26 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class GameOverController {
+public class GameOverController{
 
-    @FXML private Label resultTitle;     // Link to "Victory/Defeat" label
-    @FXML private Label resultSubtitle;  // Link to "You have slain..." label
+    @FXML private Label resultTitle;
+    @FXML private Label resultSubtitle;
 
-    // This custom method allows the BattleController to pass data to this screen!
+
     public void setGameResult(boolean playerWon, String message) {
         if (playerWon) {
             resultTitle.setText("VICTORY");
-            resultTitle.setStyle("-fx-text-fill: #d4af37;"); // Gold color
+            resultTitle.setStyle("-fx-text-fill: #d4af37;");
         } else {
             resultTitle.setText("DEFEAT");
-            resultTitle.setStyle("-fx-text-fill: #c0392b;"); // Crimson red color
+            resultTitle.setStyle("-fx-text-fill: #c0392b;");
         }
         resultSubtitle.setText(message);
     }
 
     @FXML
     public void onPlayAgainClick(ActionEvent event) throws IOException {
-        // Send them back to the Start Screen so the name system doesn't break!
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/final_project/start_screen.fxml"));
         Parent root = loader.load();
 

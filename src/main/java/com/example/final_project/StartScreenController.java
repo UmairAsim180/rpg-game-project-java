@@ -30,17 +30,17 @@ public class StartScreenController {
         }
         startErrorLabel.setText("");
 
-        // 1. Set up the loader, but don't just load it instantly
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("main-game.fxml"));
-        Parent root = loader.load(); // This loads the UI and triggers BattleController.initialize()
 
-        // 2. THE MAGIC TRICK: Grab the controller that was just created
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("main-game.fxml"));
+        Parent root = loader.load();
+
+
         BattleController battleController = loader.getController();
 
-        // 3. Pass the name over!
+
         battleController.setPlayerName(enteredName);
 
-        // 4. Finish setting up the scene just like before
+
         Scene newScene = new Scene(root, 1280, 720);
         newScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
@@ -51,7 +51,7 @@ public class StartScreenController {
 
     @FXML
     public void onHowToPlayClick(ActionEvent event) throws IOException {
-        // Load the new Rules screen!
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/final_project/rules.fxml"));
         Parent root = loader.load();
 

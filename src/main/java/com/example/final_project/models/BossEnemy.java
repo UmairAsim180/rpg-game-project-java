@@ -6,14 +6,13 @@ public class BossEnemy extends Enemy{
     private int turnCounter;
 
     public BossEnemy(String name, String specialAbility){
-        // Change 200 to 450!
         super(name, "Boss", 450, 13);
         this.phase = 1;
         this.specialAbility = specialAbility;
         this.turnCounter = 0;
     }
 
-    public int heavyAttack() {
+    public int heavyAttack(){
         int randomBonus = (int) (Math.random() * 10);
         return damage + randomBonus + (phase * 5);
     }
@@ -57,6 +56,6 @@ public class BossEnemy extends Enemy{
     }
     @Override
     public int getReward() {
-        return 500; // Massive XP drop for the final boss!
+        return 500;
     }
 }
