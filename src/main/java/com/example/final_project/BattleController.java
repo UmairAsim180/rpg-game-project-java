@@ -107,18 +107,18 @@ public class BattleController {
 
             if (scene != null) {
                 scene.setOnKeyPressed((KeyEvent event) -> {
-                    // Check which key was pressed
+
                     KeyCode key = event.getCode();
 
-                    // A or 1 = Attack
+
                     if (key == KeyCode.A || key == KeyCode.DIGIT1 || key == KeyCode.NUMPAD1) {
                         onAttackClick(null);
                     }
-                    // D or 2 = Defend
+
                     else if (key == KeyCode.D || key == KeyCode.DIGIT2 || key == KeyCode.NUMPAD2) {
                         onDefendClick(null);
                     }
-                    // M or 3 = Magic
+
                     else if (key == KeyCode.M || key == KeyCode.DIGIT3 || key == KeyCode.NUMPAD3) {
                         onMagicClick(null);
                     }

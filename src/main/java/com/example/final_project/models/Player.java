@@ -2,14 +2,14 @@ package com.example.final_project.models;
 
 public class Player extends Entity {
     private int level;
-    private int experience; // Put XP back!
+    private int experience;
     private int defenseBonus;
     private boolean isDefending;
 
     public Player(String name){
         super(name, 120, 18);
         this.level = 1;
-        this.experience = 0; // Start at 0 XP
+        this.experience = 0;
         this.defenseBonus = 10;
         this.isDefending = false;
     }
@@ -43,16 +43,16 @@ public class Player extends Entity {
     public void levelUp() {
         level++;
         maxHealth += 25;
-        currentHealth = maxHealth; // Heal to full on level up
+        currentHealth = maxHealth;
         damage += 7;
         defenseBonus += 5;
-        experience = 0; // Reset XP for the next level
+        experience = 0;
     }
 
     public int getExpNeeded() {
         return level * 60;
     }
-    // ------------------------------------------------------------------
+
 
     public int getDefenseReduction() {
         return isDefending ? defenseBonus : 0;
