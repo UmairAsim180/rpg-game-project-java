@@ -49,7 +49,6 @@ public class BattleController {
     private Label playerNameLabel;
     @FXML
     private Label playerStatsLabel;
-
     @FXML
     private ImageView playerImageView;
     @FXML
@@ -103,7 +102,7 @@ public class BattleController {
         }
         loadPlayerImages(currentLevel);
         Platform.runLater(() -> {
-            // Grab the current scene from any UI element
+
             Scene scene = playerHealthBar.getScene();
 
             if (scene != null) {
@@ -196,7 +195,7 @@ public class BattleController {
 
         if (magicCooldown > 0) {
             showPlayerLogTemporary("Cooldown: " + magicCooldown, "gray");
-            return; // Stop the attack
+            return;
         }
         if (magicSound != null) {
             magicSound.play();
@@ -210,7 +209,7 @@ public class BattleController {
         checkGameState();
     }
 
-    // --- 5. Game Loop Logic ---
+
     private void checkGameState() {
         updateUI();
 
@@ -229,7 +228,7 @@ public class BattleController {
 
                 if (magicSound != null) magicSound.play();
             }
-            // ----------------------------------
+
 
             if (currentLevel == 3){
                 switchToGameOverScreen(true, "You have slain the Boss and conquered the game!");
